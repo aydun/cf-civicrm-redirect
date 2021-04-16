@@ -53,4 +53,13 @@ add_filter('caldera_forms_submit_redirect_complete', function($referrer, $form, 
     return $referrer;
   }, 10, 4);
 
-
+// Gross ugly hack... bypass %field% magic processing if value contains 'redirect_to' so is a URL
+add_filter('caldera_forms_pre_do_field_magic', function($default, $value, $matches, $entry_id, $form)
+  {
+    if (strpos($value, 'redirect_to') !== FALSE) {
+      return $value;
+    }
+    else {
+      return $default;
+    }
+  }, 10, 7);
